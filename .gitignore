@@ -1,0 +1,41 @@
+/vendor
+/.bundle/
+/.yardoc
+/Gemfile.lock
+/_yardoc/
+/coverage/
+/doc/
+/pkg/
+/spec/reports/
+/tmp/
+*.bundle
+*.so
+*.o
+*.a
+mkmf.log
+*.gem
+Gemfile.lock
+.bundle
+.ruby-version
+
+# Node
+node_modules
+.npm
+.node_repl_history
+
+# Yarn
+yarn-error.log
+yarn-debug.log*
+.pnp/
+.pnp.js
+
+# Yarn Integrity file
+.yarn-integrity
+
+test/dest
+.bridgetown-metadata
+.bridgetown-cache
+.bridgetown-webpack
+
+# macOS
+.DS_Store
