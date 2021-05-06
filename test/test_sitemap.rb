@@ -2,7 +2,7 @@
 
 require "helper"
 
-class TestSitemap < BridgetownContentSecurityPolicy::Test
+class TestSitemap < BridgetownSitemap::Test
 
   context "rendering the site with defaults" do
     setup { build_site }
@@ -19,135 +19,169 @@ class TestSitemap < BridgetownContentSecurityPolicy::Test
       setup { @sitemap = File.read(dest_dir("sitemap.xml")) }
 
       should "have no layout" do
-        assert_not @sitemap.match %r!THIS IS MY LAYOUT!
+        refute_match %r!THIS IS MY LAYOUT!, @sitemap
       end
 
       should "put all the pages in the sitemap" do
+        assert_match %r!<loc>https://example\.com/</loc>!, @sitemap
+        assert_match %r!<loc>https://example\.com/some-subfolder/this-is-a-subpage/</loc>!, @sitemap
       end
 
       should "not put files with output: false into the sitemap" do
+        refute_match %r!/other_things/test2\.html</loc>!, @sitemap
       end
 
       should "performs URI encoding of site paths" do
-        # expect(contents).to match %r!<loc>http://example\.org/this%20url%20has%20an%20%C3%BCmlaut</loc>!
+        assert_match %r!<loc>https://example\.com/this%20url%20has%20an%20%C3%BCmlaut</loc>!, @sitemap
       end
 
       should "put all the posts in the sitemap" do
+        assert_match %r!<loc>https://example.com/2021/05/06/may-the-sixth/</loc>!, @sitemap
+        assert_match %r!<loc>https://example.com/2021/03/04/march-the-fourth/</loc>!, @sitemap
+        assert_match %r!<loc>https://example.com/2021/03/02/march-the-second/</loc>!, @sitemap
+        assert_match %r!<loc>https://example.com/2019/07/14/last-modified-at/</loc>!, @sitemap
       end
 
       should "generate the correct date for each of the posts" do
+        assert_match %r!<lastmod>2021-05-06T00:00:00(-|\+)\d+:\d+</lastmod>!, @sitemap
+        assert_match %r!<lastmod>2021-03-04T00:00:00(-|\+)\d+:\d+</lastmod>!, @sitemap
+        assert_match %r!<lastmod>2021-03-02T00:00:00(-|\+)\d+:\d+</lastmod>!, @sitemap
+        assert_match %r!<lastmod>2020-12-24T03:51:50\+00:00</lastmod>!, @sitemap
       end
 
       should "puts all the static HTML files in the sitemap.xml file" do
-        # expect(contents).to match %r!<loc>http://example\.org/some-subfolder/this-is-a-subfile\.html</loc>!
+        assert_match %r!<loc>https://example\.com/some-subfolder/this-is-a-subfile\.html</loc>!, @sitemap
       end
 
       should "does not include assets or any static files that aren't .html" do
-        # expect(contents).not_to match %r!<loc>http://example\.org/images/hubot\.png</loc>!
-        # expect(contents).not_to match %r!<loc>http://example\.org/feeds/atom\.xml</loc>!
+        refute_match %r!/assets/sample_image\.jpg</loc>!, @sitemap
+        refute_match %r!/feeds/atom\.xml</loc>!, @sitemap
       end
 
       should "include assets or any static files with .xhtml and .htm extensions" do
-        # expect(contents).to match %r!/some-subfolder/xhtml\.xhtml!
-        # expect(contents).to match %r!/some-subfolder/htm\.htm!
+        assert_match %r!<loc>https://example\.com/some-subfolder/xhtml\.xhtml</loc>!, @sitemap
+        assert_match %r!<loc>https://example\.com/some-subfolder/htm\.htm</loc>!, @sitemap
       end
 
       should "include assets or any static files with .pdf extension" do
-        # expect(contents).to match %r!/static_files/test.pdf!
-      end
-
-      should "include assets or any static files with .xml extension" do
-        # expect(contents).to match %r!/static_files/test.xml!
+        assert_match %r!<loc>https://example\.com/assets/sample_pdf\.pdf</loc>!, @sitemap
       end
 
       should "not include any files named 404.html" do
-        # expect(contents).not_to match %r!404.html!
+        refute_match %r!404.html!, @sitemap
       end
 
       should "not include any static files that have set 'sitemap: false'" do
-        # expect(contents).not_to match %r!/static_files/excluded\.pdf!
+        refute_match %r!/excluded_files/excluded\.pdf!, @sitemap
       end
 
       should "not include any static html files that have set 'sitemap: false'" do
-        # expect(contents).not_to match %r!/static_files/html_file\.html!
+        refute_match %r!/excluded_files/html_file\.html!, @sitemap
       end
 
       should "not include posts that have set 'sitemap: false'" do
-        # expect(contents).not_to match %r!/exclude-this-post\.html</loc>!
+        refute_match %r!exclude-this-post!, @sitemap
       end
 
       should "not include pages that have set 'sitemap: false'" do
-        # expect(contents).not_to match %r!/exclude-this-page\.html</loc>!
+        refute_match %r!exclude-this-page!, @sitemap
+        refute_match %r!about!, @sitemap
       end
 
       should "correctly format timestamps of static files" do
-        # expect(contents).to match %r!/this-is-a-subfile\.html</loc>\s+<lastmod>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(-|\+)\d{2}:\d{2}</lastmod>!
+        assert_match %r!/this-is-a-subfile\.html</loc>\s+<lastmod>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(-|\+)\d{2}:\d{2}</lastmod>!, @sitemap
       end
 
       should "include the correct number of items" do
-        # expect(contents.scan(%r!(?=<url>)!).count).to eql 22
+        assert_equal 16, @sitemap.scan(%r!(?=<url>)!).count
+      end
+
+      should "include generated pages" do
       end
     end
 
     context "the robots.txt" do
-#       it "has no layout" do
-#         expect(contents).not_to match(%r!\ATHIS IS MY LAYOUT!)
-#       end
+      setup { @robots = File.read(dest_dir("robots.txt")) }
 
-#       it "renders liquid" do
-#         expect(contents).to match("Sitemap: http://xn--mlaut-jva.example.org/sitemap.xml")
-#       end
+      should "have no layout" do
+        refute_match %r!\ATHIS IS MY LAYOUT!, @robots
+      end
+
+      should "renders liquid" do
+        assert_match "Sitemap: https://example.com/sitemap.xml", @robots
+      end
     end
-
   end
 
   context "rendering the site with a baseurl" do
-#     it "correctly adds the baseurl to the static files" do
-#       expect(contents).to match %r!<loc>http://example\.org/bass/some-subfolder/this-is-a-subfile\.html</loc>!
-#     end
+    setup do
+      config.baseurl = "/baseurl"
+      build_site
+    end
 
-#     it "correctly adds the baseurl to the collections" do
-#       expect(contents).to match %r!<loc>http://example\.org/bass/my_collection/test\.html</loc>!
-#     end
+    context "the sitemap" do
+      setup { @sitemap = File.read(dest_dir("sitemap.xml")) }
 
-#     it "correctly adds the baseurl to the pages" do
-#       expect(contents).to match %r!<loc>http://example\.org/bass/</loc>!
-#       expect(contents).to match %r!<loc>http://example\.org/bass/some-subfolder/this-is-a-subpage\.html</loc>!
-#     end
+      should "add the baseurl to the static files" do
+        assert_match %r!<loc>https://example\.com/baseurl/some-subfolder/this-is-a-subfile\.html</loc>!, @sitemap
+      end
 
-#     it "correctly adds the baseurl to the posts" do
-#       expect(contents).to match %r!<loc>http://example\.org/bass/2014/03/04/march-the-fourth\.html</loc>!
-#       expect(contents).to match %r!<loc>http://example\.org/bass/2014/03/02/march-the-second\.html</loc>!
-#       expect(contents).to match %r!<loc>http://example\.org/bass/2013/12/12/dec-the-second\.html</loc>!
-#     end
+      should "add the baseurl to the pages" do
+        assert_match %r!<loc>https://example\.com/baseurl/</loc>!, @sitemap
+        assert_match %r!<loc>https://example\.com/baseurl/some-subfolder/this-is-a-subpage/</loc>!, @sitemap
+      end
 
-#     it "adds baseurl to robots.txt" do
-#       content = File.read(dest_dir("robots.txt"))
-#       expect(content).to match("Sitemap: http://example.org/bass/sitemap.xml")
-#     end
+      should "add the baseurl to the posts" do
+        assert_match %r!<loc>https://example.com/baseurl/2021/05/06/may-the-sixth/</loc>!, @sitemap
+        assert_match %r!<loc>https://example.com/baseurl/2021/03/04/march-the-fourth/</loc>!, @sitemap
+        assert_match %r!<loc>https://example.com/baseurl/2021/03/02/march-the-second/</loc>!, @sitemap
+        assert_match %r!<loc>https://example.com/baseurl/2019/07/14/last-modified-at/</loc>!, @sitemap
+      end
+    end
+
+    context "the robots.txt" do
+      setup { @robots = File.read(dest_dir("robots.txt")) }
+
+      should "add contain the baseurl" do
+        assert_match "Sitemap: https://example.com/baseurl/sitemap.xml", @robots
+      end
+    end
   end
 
   context "rendering the site with a url that needs URI encoding" do
-#     let(:config) do
-#       Jekyll.configuration(Jekyll::Utils.deep_merge_hashes(overrides, "url" => "http://ümlaut.example.org"))
-#     end
+    setup do
+      config.url = "http://ümlaut.example.org"
+      build_site
+    end
 
-#     it "performs URI encoding of site url" do
-#       expect(contents).to match %r!<loc>http://xn--mlaut-jva.example.org/</loc>!
-#       expect(contents).to match %r!<loc>http://xn--mlaut-jva.example.org/some-subfolder/this-is-a-subpage.html</loc>!
-#       expect(contents).to match %r!<loc>http://xn--mlaut-jva.example.org/2014/03/04/march-the-fourth.html</loc>!
-#       expect(contents).to match %r!<loc>http://xn--mlaut-jva.example.org/2016/04/01/%E9%94%99%E8%AF%AF.html</loc>!
-#       expect(contents).to match %r!<loc>http://xn--mlaut-jva.example.org/2016/04/02/%E9%94%99%E8%AF%AF.html</loc>!
-#       expect(contents).to match %r!<loc>http://xn--mlaut-jva.example.org/2016/04/03/%E9%94%99%E8%AF%AF.html</loc>!
-#     end
+    context "the sitemap" do
+      setup { @sitemap = File.read(dest_dir("sitemap.xml")) }
 
-#     it "does not double-escape urls" do
-#       expect(contents).to_not match %r!%25!
-#     end
+      should "performs URI encoding of site url" do
+        assert_match %r!<loc>http://xn--mlaut-jva.example.org/</loc>!, @sitemap
+        assert_match %r!<loc>http://xn--mlaut-jva.example.org/some-subfolder/this-is-a-subpage/</loc>!, @sitemap
+        assert_match %r!<loc>http://xn--mlaut-jva.example.org/2021/03/04/march-the-fourth/</loc>!, @sitemap
+        assert_match %r!<loc>http://xn--mlaut-jva.example.org/2020/04/03/%E9%94%99%E8%AF%AF</loc>!, @sitemap
+        assert_match %r!<loc>http://xn--mlaut-jva.example.org/2020/04/02/%E9%94%99%E8%AF%AF</loc>!, @sitemap
+        assert_match %r!<loc>http://xn--mlaut-jva.example.org/2019/04/01/%E9%94%99%E8%AF%AF/</loc>!, @sitemap
+      end
+    end
   end
 
   context "rendering the site with a user defined robots.txt" do
+    setup do
+      File.write(source_dir("robots.txt"), "ROBOT")
+      build_site
+      @robots = File.read(dest_dir("robots.txt"))
+    end
+
+    teardown do
+      File.delete(source_dir("robots.txt"))
+    end
+
     should "not overwrite the robots.txt" do
+      assert_match %r!ROBOT!, @robots
+      refute_match %r!Sitemap!, @robots
     end
   end
 

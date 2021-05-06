@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "fileutils"
-require "byebug"
 
 module BridgetownSitemap
   class Builder < Bridgetown::Builder
@@ -22,7 +21,6 @@ module BridgetownSitemap
       .html
       .xhtml
       .pdf
-      .xml
     ).freeze
 
     # Array of all non-bridgetown site files with an HTML extension

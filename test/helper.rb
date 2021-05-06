@@ -70,7 +70,8 @@ ROOT_DIR = File.expand_path("fixtures", __dir__)
       "source"          => source_dir,
       "destination"     => dest_dir,
       "content_engine"  => "resource",
-      "url"             => "https://example.com"
+      "url"             => "https://example.com",
+      "quiet"           => true
       },
       config_overrides
     ))
