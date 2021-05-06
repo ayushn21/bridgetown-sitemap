@@ -16,18 +16,23 @@ bundle add bridgetown-sitemap -g bridgetown_plugins
 url: "https://example.com" # the base hostname & protocol for your site
 ```
 
-If you have other plugins which generate content and store that content in `site.pages`, `site.posts`, or `site.collections`, be sure to require `bridgetown-sitemap` either *after* those other gems if you *want* the sitemap to include the generated content, or *before* those other gems if you *don't want* the sitemap to include the generated content from the gems. (Programming is *hard*.)
+<br>
 
-Because the sitemap is added to `site.pages`, you may have to modify any
-templates that iterate through all pages (for example, to build a menu of
-all of the site's content).
+**This plugin only supports Bridgetown site that use the [resource content engine](https://www.bridgetownrb.com/docs/resources).**
+
+This can be configured by adding the following line to your site's `bridgetown.config.yml`:
+
+```yml
+content_engine: "resource"
+```
+
 
 ## `<lastmod>` tag
 The `<lastmod>` tag in the `sitemap.xml` will reflect by priority:
 
-1.   The modified date of the file as reported by the filesystem if you have `jekyll-last-modified-at` plugin installed
-2.   A personalised date if you add the variable `last_modified_at:` with a date in the Front Matter
-3.   The creation date of your post (corresponding to the `post.date` variable)
+1. A personalised date if you add the variable `last_modified_at:` with a date in the Front Matter. (*Dates need to be formatted as* `%Y-%m-%d %H:%M:%S %z`)
+2. The modified date of the file as reported by the filesystem.
+
 
 ## Exclusions
 
@@ -38,9 +43,7 @@ sitemap flag to `false` in the front matter for the page/post.
 sitemap: false
 ```
 
-To exclude files from your sitemap. It can be achieved with configuration using [Jekyll v3.7.2 and jekyll-sitemap v1.2.0](https://github.com/jekyll/jekyll/commit/776433109b96cb644938ffbf9caf4923bdde4d7f).
-
-Add a glob config to your `_config.yml` file.
+Add a glob config to your `bridgetown.config.yml` file.
 
 ```yml
 defaults:
@@ -50,15 +53,6 @@ defaults:
     values:
       sitemap:         false
 ```
-
-## Override default development settings
-
-[Follow these instructions on Jekyll's documentation](https://jekyllrb.com/docs/usage/#override-default-development-settings).
-
-## Known Issues
-
-1. If the `sitemap.xml` doesn't generate in the `_site` folder, ensure `_config.yml` doesn't have `safe: true`. That prevents all plugins from working.
-2. If the `sitemap.xml` doesn't generate in the `_site` folder, ensure that you don't have a sitemap generator plugin in your `_plugin` folder.
 
 ## Testing
 
