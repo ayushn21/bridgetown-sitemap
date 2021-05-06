@@ -1,6 +1,6 @@
 # Bridgetown Sitemap Generator Plugin
 
-*Bridgetown plugin to silently generate a sitemaps.org compliant sitemap for your Bridgetown site*
+**_Bridgetown plugin to silently generate a sitemaps.org compliant sitemap for your Bridgetown site_**
 
 ## Usage
 
@@ -18,7 +18,7 @@ url: "https://example.com" # the base hostname & protocol for your site
 
 <br>
 
-**This plugin only supports Bridgetown site that use the [resource content engine](https://www.bridgetownrb.com/docs/resources).**
+**This plugin only supports Bridgetown sites that use the [resource content engine](https://www.bridgetownrb.com/docs/resources).**
 
 This can be configured by adding the following line to your site's `bridgetown.config.yml`:
 
@@ -36,22 +36,22 @@ The `<lastmod>` tag in the `sitemap.xml` will reflect by priority:
 
 ## Exclusions
 
-If you would like to exclude specific pages/posts from the sitemap set the
-sitemap flag to `false` in the front matter for the page/post.
+If you would like to exclude specific pagesfrom the sitemap set the
+sitemap flag to `false` in the front matter for the page.
 
 ```yml
 sitemap: false
 ```
 
-Add a glob config to your `bridgetown.config.yml` file.
+To exclude multiple files, add a glob config to your `bridgetown.config.yml` file.
 
 ```yml
 defaults:
   -
     scope:
-      path:            "assets/**/*.pdf"
+      path: "assets/**/*.pdf"
     values:
-      sitemap:         false
+      sitemap: false
 ```
 
 ## Testing
