@@ -7,6 +7,7 @@ module BridgetownSitemap
   class Builder < Bridgetown::Builder
     def build
       hook :site, :pre_render, priority: :low do |site|
+        # TODO: Throw exception if the new resource engine isn't being used
         @site = site
 
         @site.generated_pages << sitemap unless file_exists?("sitemap.xml")
