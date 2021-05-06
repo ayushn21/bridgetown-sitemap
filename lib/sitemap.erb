@@ -1,28 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<% if page.xsl %>
+<% if page.data.xsl %>
   <?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
 <% end %>
 
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <% output_collection_names = site.config.collections.select { |name, data| data.output }.keys %>
-  <% collections.slice(output_collection_names).each do |collection| %>
+
+  <% collections.slice(*output_collection_names).each do |name, collection| %>
     <% collection.resources.each do |resource| %>
-      <% next if resource.data.title == "404" %>
+      <% next if resource.id == "/404" %>
       <url>
-        <% url = url_for resource.absolute_url.delete_suffix("index.html") %>
-        <loc><%= Bridgetown::Utils.xml_escape url %></loc>
-        <lastmod><%= resource.last_modified_at.localtime.xmlschema %></lastmod>
+        <loc><%= xml_escape resource.absolute_url %></loc>
+        <lastmod><%= resource.sitemap_last_modified_at.localtime.xmlschema %></lastmod>
       </url>
     <% end %>
   <% end %>
 
-  <!-- Add site.generated_pages -->
+  <% site.generated_pages.each do |generated_page| %>
+      <% next if ["sitemap.erb", "robots.liquid"].include? generated_page.name %>
+      <url>
+        <loc><%= xml_escape absolute_url(generated_page.url) %></loc>
+        <lastmod><%= (generated_page.data.last_modified_at || site.time).localtime.xmlschema %></lastmod>
+      </url>
+  <% end %>
 
-  <% site.static_files.each do |file| %>
+  <% page.data.static_files.each do |file| %>
     <url>
-      <% url = url_for file.relative_path %>
-      <loc><%= Bridgetown::Utils.xml_escape url %></loc>
+      <loc><%= xml_escape absolute_url(file.relative_path) %></loc>
       <lastmod><%= file.modified_time.localtime.xmlschema %></lastmod>
     </url>
   <% end %>

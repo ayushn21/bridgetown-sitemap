@@ -6,15 +6,28 @@ require "byebug"
 module BridgetownSitemap
   class Builder < Bridgetown::Builder
     def build
-      hook :site, :post_render, priority: :low do |site|
+      hook :site, :pre_render, priority: :low do |site|
         @site = site
-        byebug
+
         @site.generated_pages << sitemap unless file_exists?("sitemap.xml")
         @site.generated_pages << robots unless file_exists?("robots.txt")
       end
     end
 
     private
+
+    INCLUDED_EXTENSIONS = %w(
+      .htm
+      .html
+      .xhtml
+      .pdf
+      .xml
+    ).freeze
+
+    # Array of all non-bridgetown site files with an HTML extension
+    def static_files
+      @site.static_files.select { |file| INCLUDED_EXTENSIONS.include? file.extname }
+    end
 
     def source_path(file)
       File.expand_path "../#{file}", __dir__
@@ -25,16 +38,17 @@ module BridgetownSitemap
     end
 
     def sitemap
-      site_map = Bridgetown::GeneratedPage.new(@site, @site.source, "/", "sitemap.erb")
+      site_map = Bridgetown::GeneratedPage.new(@site, @site.source, "/", "sitemap.erb", from_plugin: true)
       site_map.content = File.read(source_path(site_map.name))
       site_map.data.permalink = "/sitemap.xml"
       site_map.data.layout = "none"
+      site_map.data.static_files = static_files
       site_map.data.xsl = file_exists?("sitemap.xsl")
       site_map
     end
 
     def robots
-      robots = Bridgetown::GeneratedPage.new(@site, @site.source, "/", "robots.liquid")
+      robots = Bridgetown::GeneratedPage.new(@site, @site.source, "/", "robots.liquid", from_plugin: true)
       robots.content = File.read(source_path(robots.name))
       robots.data.layout = "none"
       robots.data.permalink = "/robots.txt"
