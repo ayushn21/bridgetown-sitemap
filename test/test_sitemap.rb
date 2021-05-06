@@ -93,10 +93,11 @@ class TestSitemap < BridgetownSitemap::Test
       end
 
       should "include the correct number of items" do
-        assert_equal 16, @sitemap.scan(%r!(?=<url>)!).count
+        assert_equal 17, @sitemap.scan(%r!(?=<url>)!).count
       end
 
       should "include generated pages" do
+        assert_match %r!<loc>https://example.com/generated_page/</loc>!, @sitemap
       end
     end
 
@@ -186,7 +187,12 @@ class TestSitemap < BridgetownSitemap::Test
   end
 
   context "rendering the site without the resource content engine" do
+    setup { config.delete "content_engine" }
+
     should "throw an error" do
+      capture_io do
+        assert_raises(BridgetownSitemap::UnsupportedContentEngine) { build_site }
+      end
     end
   end
 end
