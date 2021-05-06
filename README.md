@@ -36,7 +36,7 @@ The `<lastmod>` tag in the `sitemap.xml` will reflect by priority:
 
 ## Exclusions
 
-If you would like to exclude specific pagesfrom the sitemap set the
+If you would like to exclude specific pages from the sitemap set the
 sitemap flag to `false` in the front matter for the page.
 
 ```yml
