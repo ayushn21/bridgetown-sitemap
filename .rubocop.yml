@@ -20,3 +20,6 @@ AllCops:
 
     - script/**/*
     - vendor/**/*
+
+Layout/LineLength:
+  Max: 120
