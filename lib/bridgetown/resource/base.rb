@@ -10,7 +10,7 @@ module Bridgetown
       private
 
       def latest_git_commit_date
-        Time.parse(`git log -1 --pretty="format:%cI" #{path}`)
+        Time.parse(`git log -1 --pretty="format:%cI" #{Addressable::URI.escape(path)}`)
       end
     end
   end
