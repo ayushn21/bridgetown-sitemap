@@ -46,7 +46,7 @@ class TestSitemap < BridgetownSitemap::Test
         assert_match %r!<lastmod>2021-05-06T00:00:00(-|\+)\d+:\d+</lastmod>!, @sitemap
         assert_match %r!<lastmod>2021-03-04T00:00:00(-|\+)\d+:\d+</lastmod>!, @sitemap
         assert_match %r!<lastmod>2021-03-02T00:00:00(-|\+)\d+:\d+</lastmod>!, @sitemap
-        assert_match %r!<lastmod>2020-12-24T03:51:50\+00:00</lastmod>!, @sitemap
+        assert_match %r!<lastmod>2019-07-14T18:22:00\+00:00</lastmod>!, @sitemap
       end
 
       should "puts all the static HTML files in the sitemap.xml file" do
