@@ -31,7 +31,7 @@ content_engine: "resource"
 The `<lastmod>` tag in the `sitemap.xml` will reflect by priority:
 
 1. A personalised date if you add the variable `last_modified_at:` with a date in the Front Matter. (*Dates need to be formatted as* `%Y-%m-%d %H:%M:%S %z`)
-2. The modified date of the file as reported by the filesystem.
+2. The modified date of the file as reported by the `git log`.
 
 
 ## Exclusions
