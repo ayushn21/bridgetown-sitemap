@@ -186,6 +186,22 @@ class TestSitemap < BridgetownSitemap::Test
     end
   end
 
+  context "rendering the site with an uncommitted file" do
+    setup do
+      File.write(source_dir("new.html"), "---\n---")
+      build_site
+      @sitemap = File.read(dest_dir("sitemap.xml"))
+    end
+
+    teardown do
+      File.delete(source_dir("new.html"))
+    end
+
+    should "include the uncommitted file in the sitemap" do
+      assert_match %r!<loc>https://example.com/new/</loc>!, @sitemap
+    end
+  end
+
   context "rendering the site without the resource content engine" do
     setup { config.delete "content_engine" }
 
