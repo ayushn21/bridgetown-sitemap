@@ -14,7 +14,7 @@ Minitest::Reporters.use! [
 ]
 
 class BridgetownSitemap::Test < Minitest::Test
-ROOT_DIR = File.expand_path("fixtures", __dir__)
+  ROOT_DIR = File.expand_path("fixtures", __dir__)
   SOURCE_DIR = File.join(ROOT_DIR, "src")
   DEST_DIR   = File.expand_path("dest", __dir__)
 
