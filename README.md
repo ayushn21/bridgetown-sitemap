@@ -1,6 +1,9 @@
 # Bridgetown Sitemap Generator Plugin
 
-**_Bridgetown plugin to silently generate a sitemaps.org compliant sitemap for your Bridgetown site_**
+[![Tests](https://github.com/ayushn21/bridgetown-sitemap/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/ayushn21/bridgetown-sitemap/actions/workflows/tests.yml)
+[![Gem Version](https://badge.fury.io/rb/bridgetown-sitemap.svg)](https://badge.fury.io/rb/bridgetown-sitemap)
+
+Bridgetown plugin to silently generate a sitemaps.org compliant sitemap for your Bridgetown site
 
 ## Usage
 
