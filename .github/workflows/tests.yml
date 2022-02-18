@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ruby_version: [2.6.6, 2.7.3, 3.0.1]
+        ruby_version: [2.6.6, 2.7.5, 3.0.3]
     continue-on-error: ${{ endsWith(matrix.ruby, 'head') || matrix.ruby == 'debug' }}
     # Has to be top level to cache properly
     env:

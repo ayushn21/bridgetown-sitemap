@@ -46,7 +46,6 @@ class TestSitemap < BridgetownSitemap::Test
         assert_match %r!<lastmod>2021-05-06T00:00:00(-|\+)\d+:\d+</lastmod>!, @sitemap
         assert_match %r!<lastmod>2021-03-04T00:00:00(-|\+)\d+:\d+</lastmod>!, @sitemap
         assert_match %r!<lastmod>2021-03-02T00:00:00(-|\+)\d+:\d+</lastmod>!, @sitemap
-        assert_match %r!<lastmod>2022-02-18T00:00:00(-|\+)\d+:\d+</lastmod>!, @sitemap
 
         # This doesn't work on CI because it runs a git command which isn't allowed I guess
         unless ENV["GITHUB_ACTIONS"]
@@ -121,7 +120,7 @@ class TestSitemap < BridgetownSitemap::Test
 
   context "rendering the site with a baseurl" do
     setup do
-      config.baseurl = "/baseurl"
+      config.base_path = "/baseurl"
       build_site
     end
 
