@@ -10,8 +10,14 @@ module Bridgetown
       private
 
       def latest_git_commit_date
+        return nil unless git_repo?
+
         date = `git log -1 --pretty="format:%cI" "#{path}"`
         Time.parse(date) if date.present?
+      end
+
+      def git_repo?
+        system "git status", out: File::NULL, err: File::NULL
       end
     end
   end
