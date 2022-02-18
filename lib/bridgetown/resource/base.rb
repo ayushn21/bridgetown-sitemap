@@ -4,7 +4,7 @@ module Bridgetown
   module Resource
     class Base
       def sitemap_last_modified_at
-        data.last_modified_at || latest_git_commit_date || date
+        (data.last_modified_at || latest_git_commit_date || date)&.to_time
       end
 
       private
