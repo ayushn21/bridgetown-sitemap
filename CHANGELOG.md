@@ -1,5 +1,10 @@
 # main
 
+# 1.2.0 / 23-01-2023
+
+* Require Bridgetown 1.0 or newer.
+* Require Ruby 2.7 or newer.
+
 # 1.1.2 / 18-02-2022
 
 * Handle cases where the site is not in a git repo
