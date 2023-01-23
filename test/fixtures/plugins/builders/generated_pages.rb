@@ -1,4 +1,4 @@
-class GeneratedPagesBuilder < SiteBuilder
+class Builders::GeneratedPages < SiteBuilder
   def build
     generator do
       generated_page = Bridgetown::GeneratedPage.new(site, site.source, "/", "generated_page.erb")
