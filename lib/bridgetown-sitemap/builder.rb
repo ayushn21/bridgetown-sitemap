@@ -3,17 +3,9 @@
 require "fileutils"
 
 module BridgetownSitemap
-  class UnsupportedContentEngine < StandardError; end
-
   class Builder < Bridgetown::Builder
     def build
       hook :site, :pre_render, priority: :low do |site|
-        unless site.uses_resource?
-          Bridgetown.logger.error "\n\nbridgetown-sitemap only supports the resource content engine"
-          Bridgetown.logger.info "Add `content_engine: 'resource'` to your bridgetown.config.yml\n\n"
-          raise UnsupportedContentEngine
-        end
-
         @site = site
 
         @site.generated_pages << sitemap unless file_exists?("sitemap.xml")
