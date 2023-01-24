@@ -10,25 +10,18 @@ Bridgetown plugin to silently generate a sitemaps.org compliant sitemap for your
 1. Install the plugin with the following command:
 
 ```shell
-bundle add bridgetown-sitemap -g bridgetown_plugins
+bundle add bridgetown-sitemap
 ```
 
-2. Add the following to your site's `bridgetown.config.yml`:
+2. Add the following to your site's `config/initializers.rb`:
 
-```yml
-url: "https://example.com" # the base hostname & protocol for your site
+```ruby
+Bridgetown.configure do |config|
+  config.url = "https://example.com" # the base hostname & protocol for your site
+
+  init :"bridgetown-sitemap"
+end
 ```
-
-<br>
-
-**This plugin only supports Bridgetown sites that use the [resource content engine](https://www.bridgetownrb.com/docs/resources).**
-
-This can be configured by adding the following line to your site's `bridgetown.config.yml`:
-
-```yml
-content_engine: "resource"
-```
-
 
 ## `<lastmod>` tag
 The `<lastmod>` tag in the `sitemap.xml` will reflect by priority:
@@ -46,15 +39,17 @@ sitemap flag to `false` in the front matter for the page.
 sitemap: false
 ```
 
-To exclude multiple files, add a glob config to your `bridgetown.config.yml` file.
+To exclude multiple files, add a glob config to your `config/initializers.rb` file.
 
-```yml
-defaults:
-  -
-    scope:
-      path: "assets/**/*.pdf"
-    values:
-      sitemap: false
+```ruby
+Bridgetown.configure do |config|
+  # ...
+
+  config.defaults << {
+    "scope" => { "path" => "assets/**/*.pdf" },
+    "values" => { "sitemap" => false }
+  }
+end
 ```
 
 ## Testing
@@ -75,4 +70,4 @@ defaults:
 
 Bridgetown Sitemap is released under the [MIT License](https://opensource.org/licenses/MIT).
 
-Copyright © 2021 [Ayush Newatia](https://twitter.com/ayushn21)
+Copyright © 2023 [Ayush Newatia](https://twitter.com/ayushn21)
