@@ -1,5 +1,8 @@
 # main
 
+* Restrict support to Bridgetown v1.2 and newer.
+* Initialize plugin using the new Ruby DSL in Bridgetown v1.2.
+
 # 1.2.0 / 23-01-2023
 
 * Require Bridgetown 1.0 or newer.
