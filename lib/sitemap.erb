@@ -18,12 +18,12 @@
   <% end %>
 
   <% site.generated_pages.each do |generated_page| %>
-      <% next if ["sitemap.erb", "robots.liquid"].include? generated_page.name %>
-      <% next if generated_page.data.sitemap == false %>
-      <url>
-        <loc><%= xml_escape absolute_url(generated_page.url) %></loc>
-        <lastmod><%= (generated_page.data.last_modified_at || site.time).localtime.xmlschema %></lastmod>
-      </url>
+    <% next if ["sitemap.erb", "robots.liquid"].include? generated_page.name %>
+    <% next if generated_page.data.sitemap == false %>
+    <url>
+      <loc><%= xml_escape absolute_url(generated_page.url) %></loc>
+      <lastmod><%= (generated_page.data.last_modified_at || site.time).localtime.xmlschema %></lastmod>
+    </url>
   <% end %>
 
   <% page.data.static_files.each do |file| %>
