@@ -9,5 +9,5 @@ group :test do
   gem "minitest"
   gem "minitest-profile"
   gem "minitest-reporters"
-  gem "shoulda"
+  gem "minitest-hooks"
 end

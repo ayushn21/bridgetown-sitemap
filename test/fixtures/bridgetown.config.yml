@@ -1,8 +1,0 @@
-timezone: UTC
-
-defaults:
-  -
-    scope:
-      path: "excluded_files/**/*"
-    values:
-      sitemap: false
