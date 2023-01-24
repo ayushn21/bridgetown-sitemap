@@ -4,4 +4,6 @@ require "bridgetown"
 require "bridgetown/resource/base"
 require "bridgetown-sitemap/builder"
 
-BridgetownSitemap::Builder.register
+Bridgetown.initializer :"bridgetown-sitemap" do |config|
+  config.builder BridgetownSitemap::Builder
+end
