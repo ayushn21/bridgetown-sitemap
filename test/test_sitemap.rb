@@ -4,6 +4,7 @@ require "helper"
 
 class TestSitemap < BridgetownSitemap::Test
   def prepare_site
+    Bridgetown.reset_configuration!
     @config = Bridgetown.configuration(
       "full_rebuild"    => true,
       "root_dir"        => root_dir,
