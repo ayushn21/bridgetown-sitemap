@@ -4,22 +4,32 @@ inherit_gem:
   rubocop-bridgetown: .rubocop.yml
 
 AllCops:
-  TargetRubyVersion: 2.5
-  Include:
-    - lib/**/*.rb
+  TargetRubyVersion: 2.7
 
   Exclude:
     - .gitignore
-    - .rspec
     - .rubocop.yml
+    - "*.gemspec"
 
     - Gemfile.lock
     - CHANGELOG.md
     - LICENSE.txt
     - README.md
+    - Rakefile
+    - bridgetown.automation.rb
 
     - script/**/*
+    - test/fixtures/**/*
     - vendor/**/*
 
 Layout/LineLength:
-  Max: 120
+  Max: 140
+
+Metrics/BlockLength:
+  Enabled: false
+
+Bundler/OrderedGems:
+  Enabled: false
+
+Style/IfUnlessModifier:
+  Enabled: false

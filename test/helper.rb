@@ -2,7 +2,7 @@
 
 require "minitest/autorun"
 require "minitest/reporters"
-require 'minitest/hooks/default'
+require "minitest/hooks/default"
 require "bridgetown"
 
 Bridgetown.begin!
@@ -37,6 +37,6 @@ class BridgetownSitemap::Test < Minitest::Test
   end
 
   def make_context(registers = {})
-    Liquid::Context.new({}, {}, { :site => site }.merge(registers))
+    Liquid::Context.new({}, {}, { site: site }.merge(registers))
   end
 end

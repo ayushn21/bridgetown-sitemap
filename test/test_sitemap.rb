@@ -6,12 +6,12 @@ class TestSitemap < BridgetownSitemap::Test
   def prepare_site
     Bridgetown.reset_configuration!
     @config = Bridgetown.configuration(
-      "full_rebuild"    => true,
-      "root_dir"        => root_dir,
-      "source"          => source_dir,
-      "destination"     => dest_dir,
-      "url"             => "https://example.com",
-      "quiet"           => true
+      "full_rebuild" => true,
+      "root_dir"     => root_dir,
+      "source"       => source_dir,
+      "destination"  => dest_dir,
+      "url"          => "https://example.com",
+      "quiet"        => true
     )
 
     @config.run_initializers! context: :static
@@ -215,4 +215,3 @@ class TestSitemap < BridgetownSitemap::Test
     end
   end
 end
-
