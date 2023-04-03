@@ -12,12 +12,19 @@ module Bridgetown
       def latest_git_commit_date
         return nil unless git_repo?
 
-        date = `git log -1 --pretty="format:%cI" "#{path}"`
+        date = sitemap_cache.getset(id) do
+          `git log -1 --pretty="format:%cI" "#{path}"`
+        end
+
         Time.parse(date) if date.present?
       end
 
       def git_repo?
         system "git status", out: File::NULL, err: File::NULL
+      end
+
+      def sitemap_cache
+        @sitemap_cache = Bridgetown::Cache.new("sitemap")
       end
     end
   end
