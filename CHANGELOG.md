@@ -1,5 +1,9 @@
 # main
 
+# 2.0.1 / 04-04-2023
+
+* Cache `git log` value for last modified date.
+
 # 2.0.0 / 25-01-2023
 
 * Restrict support to Bridgetown v1.2 and newer.
