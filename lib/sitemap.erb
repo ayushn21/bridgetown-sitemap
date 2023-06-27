@@ -14,10 +14,10 @@
         <loc><%= xml_escape resource.absolute_url %></loc>
         <lastmod><%= resource.sitemap_last_modified_at.localtime.xmlschema %></lastmod>
         <% if resource.data.sitemap_priority %>
-        <priority><%= resource.data.sitemap_priority %></priority>
+          <priority><%= resource.data.sitemap_priority %></priority>
         <% end %>
         <% if resource.data.sitemap_change_frequency %>
-        <changefreq><%= resource.data.sitemap_change_frequency %></changefreq>
+          <changefreq><%= resource.data.sitemap_change_frequency %></changefreq>
         <% end %>
       </url>
     <% end %>
@@ -30,10 +30,10 @@
       <loc><%= xml_escape absolute_url(generated_page.url) %></loc>
       <lastmod><%= (generated_page.data.last_modified_at || site.time).localtime.xmlschema %></lastmod>
       <% if generated_page.data.sitemap_priority %>
-      <priority><%= generated_page.data.sitemap_priority %></priority>
+        <priority><%= generated_page.data.sitemap_priority %></priority>
       <% end %>
       <% if generated_page.data.sitemap_change_frequency %>
-      <changefreq><%= generated_page.data.sitemap_change_frequency %></changefreq>
+        <changefreq><%= generated_page.data.sitemap_change_frequency %></changefreq>
       <% end %>
     </url>
   <% end %>
@@ -44,10 +44,10 @@
       <loc><%= xml_escape absolute_url(file.relative_path) %></loc>
       <lastmod><%= file.modified_time.localtime.xmlschema %></lastmod>
       <% if file.data.sitemap_priority %>
-      <priority><%= file.data.sitemap_priority %></priority>
+        <priority><%= file.data.sitemap_priority %></priority>
       <% end %>
       <% if file.data.sitemap_change_frequency %>
-      <changefreq><%= file.data.sitemap_change_frequency %></changefreq>
+        <changefreq><%= file.data.sitemap_change_frequency %></changefreq>
       <% end %>
     </url>
   <% end %>
