@@ -1,5 +1,9 @@
 # main
 
+# 2.0.2 / 27-06-2023
+
+* Add support for priority and changefreq tags.
+
 # 2.0.1 / 04-04-2023
 
 * Cache `git log` value for last modified date.
