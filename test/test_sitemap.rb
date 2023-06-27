@@ -116,7 +116,7 @@ class TestSitemap < BridgetownSitemap::Test
     end
 
     it "includes the correct number of items for the sitemap" do
-      assert_equal 18, @sitemap.scan(%r!(?=<url>)!).count
+      assert_equal 19, @sitemap.scan(%r!(?=<url>)!).count
     end
 
     it "includes generated pages in the sitemap" do
@@ -125,6 +125,11 @@ class TestSitemap < BridgetownSitemap::Test
 
     it "renders liquid in the robots.txt" do
       assert_match "Sitemap: https://example.com/sitemap.xml", @robots
+    end
+
+    it "renders the priority and changefreq properties if needed" do
+      assert_match %r!<priority>0.8</priority>!, @sitemap
+      assert_match %r!<changefreq>monthly</changefreq>!, @sitemap
     end
   end
 

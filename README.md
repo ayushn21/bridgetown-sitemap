@@ -30,6 +30,22 @@ The `<lastmod>` tag in the `sitemap.xml` will reflect by priority:
 2. The modified date of the file as reported by `git log`.
 
 
+## `<priority>` and `<changefreq>` tag
+You can optionally specify a _priority_ and _change frequency_ for each page in your site by adding the following to the Front Matter of each page:
+
+```yml
+sitemap_priority: 0.7
+sitemap_change_frequency: weekly
+```
+
+This will add the following to the `<url>` tag in the `sitemap.xml`:
+
+```xml
+<priority>0.7</priority>
+<changefreq>weekly</changefreq>
+```
+
+
 ## Exclusions
 
 If you would like to exclude specific pages from the sitemap set the
