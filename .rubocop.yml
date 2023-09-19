@@ -25,6 +25,12 @@ AllCops:
 Layout/LineLength:
   Max: 140
 
+Layout/IndentationWidth:
+  Enabled: false
+
+Layout/IndentationConsistency:
+  Enabled: false
+
 Metrics/BlockLength:
   Enabled: false
 
