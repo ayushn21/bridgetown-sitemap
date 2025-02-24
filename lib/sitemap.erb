@@ -9,56 +9,61 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
   xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-  http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd
-  http://www.w3.org/1999/xhtml
-  http://www.w3.org/2002/08/xhtml/xhtml1-strict.xsd">
+    http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd
+    http://www.w3.org/1999/xhtml
+    http://www.w3.org/2002/08/xhtml/xhtml1-strict.xsd">
   <% output_collection_names = site.config.collections.select { |_name, data| data.output }.keys %>
 
   <% collections.slice(*output_collection_names).each do |_name, collection| %>
-    <% collection.resources.group_by { |x| [x.data.slug, x.date] }.each do |_, resources| %>
-      <% @resources_filtered = resources.filter { |x| x.id != "/404" && x.data.sitemap != false } %>
-      <% @default_resource = @resources_filtered.detect { |x| !x.data.locale || site.locale == x.data.locale } %>
-      <% @last_modified = @resources_filtered.max_by { |x| x.data.sitemap_last_modified_at } %>
-      <% if @default_resource %>
+    <% BridgetownSitemap::GroupedResources.new(collection.resources)
+        .each(locale: site.locale) do |default:, latest:, group:| %>
+      <% if default %>
         <url>
-          <loc><%= xml_escape absolute_url(in_locale(@default_resource, @default_resource.data.locale)) %></loc>
-          <% @resources_filtered.each do |resource| %>
+          <loc><%= xml_escape absolute_url(in_locale(default, default.data.locale)) %></loc>
+
+          <% group.each do |resource| %>
             <% if site.locale == resource.data.locale %>
-          <xhtml:link rel="alternate" hreflang="x-default" href="<%= xml_escape resource.absolute_url %>" />
+              <xhtml:link rel="alternate" hreflang="x-default" href="<%= xml_escape resource.absolute_url %>" />
             <% end %>
-          <xhtml:link rel="alternate" hreflang="<%= resource.data.locale %>" href="<%= xml_escape resource.absolute_url %>" />
+              <xhtml:link rel="alternate" hreflang="<%= resource.data.locale %>" href="<%= xml_escape resource.absolute_url %>" />
           <% end %>
-          <lastmod><%= @last_modified.sitemap_last_modified_at.localtime.xmlschema %></lastmod>
-          <% if @default_resource.data.sitemap_priority %>
-            <priority><%= @default_resource.data.sitemap_priority %></priority>
+
+          <lastmod><%= latest.sitemap_last_modified_at.localtime.xmlschema %></lastmod>
+
+          <% if default.data.sitemap_priority %>
+            <priority><%= default.data.sitemap_priority %></priority>
           <% end %>
-          <% if @default_resource.data.sitemap_change_frequency %>
-            <changefreq><%= @default_resource.data.sitemap_change_frequency %></changefreq>
+
+          <% if default.data.sitemap_change_frequency %>
+            <changefreq><%= default.data.sitemap_change_frequency %></changefreq>
           <% end %>
         </url>
       <% end %>
     <% end %>
   <% end %>
 
-  <% site.generated_pages.group_by { |x| x.data.slug }.each do |_, generated_pages| %>
-    <% @pages_filtered = generated_pages.filter { |x| !(["sitemap.erb", "robots.liquid"].include? x.name) && x.data.sitemap != false } %>
-    <% @default_page = @pages_filtered.detect { |x| !x.data.locale || site.locale == x.data.locale } %>
-    <% @last_modified = @pages_filtered.max_by { |x| x.data.last_modified_at }  %>
-    <% if @default_page %>
+  <% BridgetownSitemap::GroupedGeneratedPages.new(site.generated_pages)
+      .each(locale: site.locale) do |default:, latest:, group:| %>
+
+    <% if default %>
       <url>
-        <loc><%= xml_escape absolute_url(@default_page.url) %></loc>
-        <% @pages_filtered.each do |page| %>
+        <loc><%= xml_escape absolute_url(default.url) %></loc>
+
+        <% group.each do |page| %>
           <% if !page.data.locale || site.locale == page.data.locale %>
-        <xhtml:link rel="alternate" hreflang="x-default" href="<%= xml_escape absolute_url(page.url) %>" />
+            <xhtml:link rel="alternate" hreflang="x-default" href="<%= xml_escape absolute_url(page.url) %>" />
           <% end %>
-        <xhtml:link rel="alternate" hreflang="<%= page.data.locale || site.locale %>" href="<%= xml_escape absolute_url(page.url) %>" />
+            <xhtml:link rel="alternate" hreflang="<%= page.data.locale || site.locale %>" href="<%= xml_escape absolute_url(page.url) %>" />
         <% end %>
-        <lastmod><%= (@last_modified.data.last_modified_at || site.time).localtime.xmlschema %></lastmod>
-        <% if @default_page.data.sitemap_priority %>
-          <priority><%= @default_page.data.sitemap_priority %></priority>
+
+        <lastmod><%= (latest.data.last_modified_at || site.time).localtime.xmlschema %></lastmod>
+
+        <% if default.data.sitemap_priority %>
+          <priority><%= default.data.sitemap_priority %></priority>
         <% end %>
-        <% if @default_page.data.sitemap_change_frequency %>
-          <changefreq><%= @default_page.data.sitemap_change_frequency %></changefreq>
+
+        <% if default.data.sitemap_change_frequency %>
+          <changefreq><%= default.data.sitemap_change_frequency %></changefreq>
         <% end %>
       </url>
     <% end %>
