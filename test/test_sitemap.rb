@@ -116,11 +116,17 @@ class TestSitemap < BridgetownSitemap::Test
     end
 
     it "includes the correct number of items for the sitemap" do
-      assert_equal 19, @sitemap.scan(%r!(?=<url>)!).count
+      assert_equal 20, @sitemap.scan(%r!(?=<url>)!).count
     end
 
     it "includes generated pages in the sitemap" do
       assert_match %r!<loc>https://example.com/generated_page/</loc>!, @sitemap
+    end
+
+    it "includes i18n generated pages in the sitemap" do
+      assert_match %r!<xhtml:link rel="alternate" hreflang="x-default" href="https://example\.com/generated_page/" />!, @sitemap
+      assert_match %r!<xhtml:link rel="alternate" hreflang="en" href="https://example\.com/generated_page/" />!, @sitemap
+      assert_match %r!<xhtml:link rel="alternate" hreflang="ru" href="https://example\.com/ru/generated_page/" />!, @sitemap
     end
 
     it "renders liquid in the robots.txt" do
@@ -130,6 +136,12 @@ class TestSitemap < BridgetownSitemap::Test
     it "renders the priority and changefreq properties if needed" do
       assert_match %r!<priority>0.8</priority>!, @sitemap
       assert_match %r!<changefreq>monthly</changefreq>!, @sitemap
+    end
+
+    it "adds child links for i18n posts" do
+      assert_match %r!<xhtml:link rel="alternate" hreflang="x-default" href="https://example\.com/2022/02/19/locale-default/" />!, @sitemap
+      assert_match %r!<xhtml:link rel="alternate" hreflang="en" href="https://example\.com/2022/02/19/locale-default/" />!, @sitemap
+      assert_match %r!<xhtml:link rel="alternate" hreflang="ru" href="https://example\.com/ru/2022/02/19/locale-default/" />!, @sitemap
     end
   end
 
@@ -161,6 +173,12 @@ class TestSitemap < BridgetownSitemap::Test
 
     it "adds the baseurl in the robots.txt" do
       assert_match "Sitemap: https://example.com/baseurl/sitemap.xml", @robots
+    end
+
+    it "adds child links for i18n posts with baseurl" do
+      assert_match %r!<xhtml:link rel="alternate" hreflang="x-default" href="https://example\.com/baseurl/2022/02/19/locale-default/" />!, @sitemap
+      assert_match %r!<xhtml:link rel="alternate" hreflang="en" href="https://example\.com/baseurl/2022/02/19/locale-default/" />!, @sitemap
+      assert_match %r!<xhtml:link rel="alternate" hreflang="ru" href="https://example\.com/baseurl/ru/2022/02/19/locale-default/" />!, @sitemap
     end
   end
 
