@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r!^(test|spec|features)/!)
   spec.require_paths = ["lib"]
 
-  spec.required_ruby_version = ">= 2.7.0"
+  spec.required_ruby_version = ">= 3.2.4"
 
   spec.add_dependency "bridgetown", ">= 1.3.0", "< 3.0"
 
