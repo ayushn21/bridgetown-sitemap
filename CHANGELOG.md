@@ -1,5 +1,12 @@
 # main
 
+# 3.0.0 / 24-02-2025
+
+* Add i18n support
+* Drop support for Bridgetown 1.2.x and lower
+* Drop support for Ruby 3.1.x and lower
+* Fix git error for dynamically generated resources
+
 # 2.0.2 / 27-06-2023
 
 * Add support for priority and changefreq tags.
