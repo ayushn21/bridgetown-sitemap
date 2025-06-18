@@ -82,4 +82,17 @@
       <% end %>
     </url>
   <% end %>
+
+  <% page.data.custom_urls.each do |custom_url| %>
+    <url>
+      <loc><%= xml_escape custom_url["url"] %></loc>
+      <lastmod><%= custom_url["lastmod"] || Time.now.localtime.xmlschema %></lastmod>
+      <% if custom_url["changefreq"] %>
+        <changefreq><%= custom_url["changefreq"] %></changefreq>
+      <% end %>
+      <% if custom_url["priority"] %>
+        <priority><%= custom_url["priority"] %></priority>
+      <% end %>
+    </url>
+  <% end %>
 </urlset>
