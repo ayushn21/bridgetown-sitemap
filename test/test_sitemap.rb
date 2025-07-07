@@ -237,4 +237,20 @@ class TestSitemap < BridgetownSitemap::Test
       assert_match %r!<loc>https://example.com/new/</loc>!, @sitemap
     end
   end
+
+  describe "rendering the site with custom URLs" do
+    before(:all) do
+      prepare_site
+      @config["sitemap"] = { "custom_urls" => [{ "url" => "https://example.com/custom-url", "priority" => 0.9, "changefreq" => "weekly" }] }
+      process_site
+
+      @sitemap = File.read(dest_dir("sitemap.xml"))
+    end
+
+    it "includes custom URLs in the sitemap" do
+      assert_match %r!<loc>https://example.com/custom-url</loc>!, @sitemap
+      assert_match %r!<priority>0.9</priority>!, @sitemap
+      assert_match %r!<changefreq>weekly</changefreq>!, @sitemap
+    end
+  end
 end
