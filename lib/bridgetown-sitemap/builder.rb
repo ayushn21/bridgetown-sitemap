@@ -42,6 +42,7 @@ module BridgetownSitemap
       site_map.data.layout = "none"
       site_map.data.static_files = static_files
       site_map.data.xsl = file_exists?("sitemap.xsl")
+      site_map.data.custom_urls = @site.config.dig("sitemap", "custom_urls") || []
       site_map
     end
 
