@@ -1,5 +1,9 @@
 # main
 
+# 3.0.1 / 24-12-2025
+
+* Remove uses of `.present?`
+
 # 3.0.0 / 24-02-2025
 
 * Add i18n support
