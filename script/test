@@ -9,15 +9,13 @@ if [ -d test/dest ]
   then rm -r test/dest
 fi
 
-testopts="--profile"
-
 if [[ $# -lt 1 ]]
 then
   set -x
   time ruby -S bundle exec \
-    rake TESTOPTS=$testopts test
+    rake test
 else
   set -x
   time ruby -S bundle exec ruby -I test \
-    "$@" $testops
+    "$@"
 fi
