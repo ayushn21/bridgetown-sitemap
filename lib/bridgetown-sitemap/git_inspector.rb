@@ -14,7 +14,7 @@ module BridgetownSitemap
         `git log -1 --pretty="format:%cI" "#{@resource.path}"`
       end
 
-      Time.parse(date) if date.present?
+      Time.parse(date) if !date.nil? && date.size > 0
     end
 
     private

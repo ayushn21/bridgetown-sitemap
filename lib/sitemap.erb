@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<% if page.data.xsl.present? %>
+<% if !page.data.xsl.nil? %>
   <?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
 <% end %>
 
